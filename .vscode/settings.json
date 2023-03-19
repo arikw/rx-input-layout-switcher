@@ -1,0 +1,21 @@
+{
+    "eslint.format.enable": true,
+    "eslint.debug": false,
+    "eslint.workingDirectories": [{ "mode": "location" }],
+
+    "javascript.format.enable": false,
+    "json.format.enable": false,
+
+    "editor.formatOnSaveMode": "file",
+
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.detectIndentation": false,
+        "editor.tabSize": 4,
+        "editor.formatOnType": true,
+        "editor.formatOnSaveMode": "modifications",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        }
+      },
+}
