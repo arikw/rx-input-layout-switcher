@@ -16,7 +16,6 @@
       "no-useless-escape": "off",
       "no-empty": "off",
       "camelcase": ["warn", { "properties": "never" }],
-      "no-var": ["error"],
       "prefer-const": ["error"],
       "block-spacing": ["warn", "always"],
       "comma-spacing": ["warn", { "before": false, "after": true }],

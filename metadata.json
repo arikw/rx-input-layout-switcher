@@ -4,5 +4,6 @@
   "uuid": "rx-input-layout-switcher@wzmn.net",
   "shell-version": ["40","41","42","43"],
   "url": "https://github.com/arikw/rx-input-layout-switcher",
-  "session-modes":  [ "unlock-dialog", "user" ]
+  "session-modes":  [ "unlock-dialog", "user" ],
+  "version": 1
 }
