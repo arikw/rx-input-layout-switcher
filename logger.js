@@ -1,7 +1,7 @@
 /* exported d, printState */
 
 const
-    dbg = true,
+    dbg = false,
     Clutter = imports.gi.Clutter,
     ExtensionUtils = imports.misc.extensionUtils,
     Me = ExtensionUtils.getCurrentExtension(),
@@ -20,20 +20,20 @@ const
         MOD5: 0, // Right ALT
     };
 
-function printState(mods, modifiersSequence) {
+function printState({ bits, sequence }) {
     // for (const mask of Object.keys(modBitsState)) {
     //     d(`${mask}: ${mods & Clutter.ModifierType[`${mask}_MASK`]}`, Clutter.ModifierType[`${mask}_MASK`], mods);
     // }
     for (const modName of Object.keys(modBitsState)) {
-        modBitsState[modName] = mods & Clutter.ModifierType[`${modName}_MASK`];
+        modBitsState[modName] = bits & Clutter.ModifierType[`${modName}_MASK`];
     }
 
     const activeModsDescription = Object.entries(modBitsState)
         .filter(([_, value]) => value).map(([name]) => name)
         .join('|');
 
-    d(`${activeModsDescription || 'NONE'} (value: ${mods})`);
-    d(`modifiersSequence: ${modifiersSequence.map(v => v.bits).join('>')}`);
+    d(`${activeModsDescription || 'NONE'} (value: ${bits})`);
+    d(`modifiersSequence: ${sequence.map(v => v.bits).join('>')}`);
     d('');
 }
 
