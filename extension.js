@@ -26,7 +26,7 @@ const
     ExtensionUtils = imports.misc.extensionUtils,
     Me = ExtensionUtils.getCurrentExtension(),
     { d, printState } = Me.imports.logger,
-    { watch, observable } = Me.imports.reactive,
+    { watch, unwatch, observable } = Me.imports.reactive,
 
     // consts
     inputSourceManager = imports.ui.status.keyboard.getInputSourceManager(),
@@ -112,7 +112,6 @@ function _getCurrentModifiers() {
         ~(Clutter.ModifierType.LOCK_MASK |  Clutter.ModifierType.MOD2_MASK);
 }
 
-
 function _resetSequence(mods) {
     state.modifiers.sequence = [
         {
@@ -123,7 +122,13 @@ function _resetSequence(mods) {
     state.modifiers.isBroken = mods !== 0;
 }
 
+function _onModifierBitsChange(bits) {
+    _addToSequence({ bits, date: Date.now() });
+}
+
 function enable() {
+    watch(state.modifiers, 'bits', _onModifierBitsChange);
+    state.modifiers.bits = _getCurrentModifiers();
     mainLoopTimerId = Mainloop.timeout_add(50, _tick);
     acceleratorListenerId = global.display.connect('accelerator-activated', () => {
         d('accelerator activation detected');
@@ -134,12 +139,7 @@ function enable() {
 function disable() {
     Mainloop.source_remove(mainLoopTimerId);
     global.display.disconnect(acceleratorListenerId);
+    unwatch(state.modifiers, 'bits', _onModifierBitsChange);
 }
 
-function init() {
-    watch(state.modifiers, 'bits', bits => {
-        _addToSequence({ bits, date: Date.now() });
-    });
-
-    state.modifiers.bits = _getCurrentModifiers();
-}
+function init() {}
