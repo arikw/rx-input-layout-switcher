@@ -17,10 +17,9 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* exported observable, watch, unwatch */
 const watchersSymbol = Symbol('watchers');
 
-function observable(obj) {
+export function observable(obj) {
     const watchers = {};
 
     const proxy = new Proxy(obj, {
@@ -39,13 +38,13 @@ function observable(obj) {
     return proxy;
 }
 
-function watch(obj, prop, cb) {
+export function watch(obj, prop, cb) {
     const watchers = obj[watchersSymbol];
     watchers[prop] = watchers[prop] ?? [];
     watchers[prop].push(cb);
 }
 
-function unwatch(obj, prop, cb) {
+export function unwatch(obj, prop, cb) {
     const watchers = obj[watchersSymbol];
     if (!watchers[prop]) {
         return;

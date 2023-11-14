@@ -17,19 +17,15 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-/* exported init, enable, disable */
+import Clutter from 'gi://Clutter';
+import { getInputSourceManager } from 'resource:///org/gnome/shell/ui/status/keyboard.js';
+import { d, printState } from './logger.js';
+import { watch, unwatch, observable } from './reactive.js';
 
 const
-    // imports
-    Clutter = imports.gi.Clutter,
-    Mainloop = imports.mainloop,
-    ExtensionUtils = imports.misc.extensionUtils,
-    Me = ExtensionUtils.getCurrentExtension(),
-    { d, printState } = Me.imports.logger,
-    { watch, unwatch, observable } = Me.imports.reactive,
-
     // consts
-    inputSourceManager = imports.ui.status.keyboard.getInputSourceManager(),
+    { timeout_add, source_remove } = imports.mainloop,
+    inputSourceManager = getInputSourceManager(),
     ALT_AND_SHIFT_MASK = Clutter.ModifierType.MOD1_MASK | Clutter.ModifierType.SHIFT_MASK,
     state = {
         modifiers: observable({
@@ -126,20 +122,22 @@ function _onModifierBitsChange(bits) {
     _addToSequence({ bits, date: Date.now() });
 }
 
-function enable() {
-    watch(state.modifiers, 'bits', _onModifierBitsChange);
-    state.modifiers.bits = _getCurrentModifiers();
-    mainLoopTimerId = Mainloop.timeout_add(50, _tick);
-    acceleratorListenerId = global.display.connect('accelerator-activated', () => {
-        d('accelerator activation detected');
-        state.modifiers.isBroken = true;
-    });
-}
+export default class RxInputLayoutSwitcher {
 
-function disable() {
-    Mainloop.source_remove(mainLoopTimerId);
-    global.display.disconnect(acceleratorListenerId);
-    unwatch(state.modifiers, 'bits', _onModifierBitsChange);
-}
+    enable() {
+        watch(state.modifiers, 'bits', _onModifierBitsChange);
+        state.modifiers.bits = _getCurrentModifiers();
+        mainLoopTimerId = timeout_add(50, _tick);
+        acceleratorListenerId = global.display.connect('accelerator-activated', () => {
+            d('accelerator activation detected');
+            state.modifiers.isBroken = true;
+        });
+    }
 
-function init() {}
+    disable() {
+        source_remove(mainLoopTimerId);
+        global.display.disconnect(acceleratorListenerId);
+        unwatch(state.modifiers, 'bits', _onModifierBitsChange);
+    }
+
+}

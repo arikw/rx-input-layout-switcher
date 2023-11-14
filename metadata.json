@@ -2,7 +2,7 @@
   "name": "RX Input Layout Switcher",
   "description": "Use Alt+Shift to change the keyboard language",
   "uuid": "rx-input-layout-switcher@wzmn.net",
-  "shell-version": ["40","41","42","43", "44"],
+  "shell-version": ["45"],
   "url": "https://github.com/arikw/rx-input-layout-switcher",
-  "version": 3
+  "version": 4
 }

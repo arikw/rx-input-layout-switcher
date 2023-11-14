@@ -1,11 +1,8 @@
-/* exported d, printState */
+import Clutter from 'gi://Clutter';
 
 const
     dbg = false,
-    Clutter = imports.gi.Clutter,
-    ExtensionUtils = imports.misc.extensionUtils,
-    Me = ExtensionUtils.getCurrentExtension(),
-    tag = Me.uuid.split('@')[0],
+    tag = 'rx-input-layout-switcher@wzmn.net',
     modBitsState = {
         CONTROL: 0,
         SHIFT: 0,
@@ -20,7 +17,7 @@ const
         MOD5: 0, // Right ALT
     };
 
-function printState({ bits, sequence }) {
+export function printState({ bits, sequence }) {
     // for (const mask of Object.keys(modBitsState)) {
     //     d(`${mask}: ${mods & Clutter.ModifierType[`${mask}_MASK`]}`, Clutter.ModifierType[`${mask}_MASK`], mods);
     // }
@@ -37,7 +34,7 @@ function printState({ bits, sequence }) {
     d('');
 }
 
-function d(message, level = 'debug') {
+export function d(message, level = 'debug') {
     if ((level === 'debug') && !dbg) {
         return; // skip debug prints
     }
