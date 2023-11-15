@@ -39,5 +39,5 @@ export function d(message, level = 'debug') {
         return; // skip debug prints
     }
 
-    log(`${tag}: ${message}`);
+    console.log(`${tag}: ${message}`);
 }
