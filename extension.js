@@ -53,6 +53,8 @@ export default class RxInputLayoutSwitcher {
         source_remove(this.mainLoopTimerId);
         global.display.disconnect(this.acceleratorListenerId);
         unwatch(this.state.modifiers, 'bits', this._onModifierBitsChange);
+        this.inputSourceManager = null;
+        this.state = null;
     }
 
     _addToSequence(descriptor) {
