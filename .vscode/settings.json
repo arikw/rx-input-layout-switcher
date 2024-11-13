@@ -15,7 +15,7 @@
         "editor.formatOnType": true,
         "editor.formatOnSaveMode": "modifications",
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": true
+          "source.fixAll.eslint": "explicit"
         }
       },
 }
